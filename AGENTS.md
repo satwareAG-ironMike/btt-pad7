@@ -115,3 +115,5 @@ Conventions:
 - Conventional Commits; one intent per commit
 - Scripts target arm64/Debian 13 unless marked otherwise
 - Hardware state changes (flashes, config changes on the CB1) must be recorded in `logs/` at execution time
+- Constitution `.specify/memory/constitution.md` v1.0.0 is the binding governance for all work in this repo
+- SDD: specs in `specs/###-feature/` via spec-kit (canonical source satwareAG/spec-kit); IPADP L1 metadata in `specs/metadata.json`; public repo must not link to private repos

@@ -1,0 +1,20 @@
+{
+  "project": "btt-pad7",
+  "forge": "github.com",
+  "repo": "satwareAG-ironMike/btt-pad7",
+  "conformance_level": "L1",
+  "sdd_source": "https://github.com/satwareAG/spec-kit",
+  "dependencies": {
+    "upstream": [
+      {
+        "repo": "satwareAG/spec-kit",
+        "forge": "github.com",
+        "relationship": "SDD methodology provider: methodology and tooling this repo conforms to",
+        "url": "https://github.com/satwareAG/spec-kit",
+        "channel": "gh:issues",
+        "local_path": "~/external/spec-kit"
+      }
+    ],
+    "downstream": []
+  }
+}
