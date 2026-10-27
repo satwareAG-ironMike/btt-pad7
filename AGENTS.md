@@ -78,6 +78,8 @@ Default section order:
 
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
 
+- `main` is branch-protected and PR-only since 2026-10-27: required PR, approving-review count 0, `enforce_admins: true`, linear history, no force-push, no branch deletion. All work lands on `main` via feature branch + PR; direct pushes to `main` are not possible and must not be attempted
+
 ## Child DOX Index
 
 No child AGENTS.md files yet. Scan for new directories with their own durable boundaries and add a row here when one is created:
