@@ -23,3 +23,18 @@
 11. **Camera state checks (computervision)**: cat graphic verified on panel (3/3 captures), marker line `BTT-CAM-TEST-4821` verified after tty1 write, LED lit/off states verified as above.
 
 Redaction (constitution VI): sudo password not recorded.
+
+## Deep-scan addendum (same day, 00:45-00:52)
+
+| Area | Finding |
+|------|---------|
+| WLAN | SDIO mmc1 function = Realtek RTL8189FS (vendor 024c device f179), driver `8189fs`, rails vcc33-wifi/vcc-wifi-io up, wifi_power/wifi_wake GPIOs (166/207) high; wlan0 present, unassociated |
+| Bluetooth | **No BT hardware enumerated anywhere**: single SDIO function (8189FS is WiFi-only), no BT USB interface, no BT device-tree node, no BT rfkill, no hci device, `bluetooth.service` enabled-but-never-started, no hci_uart module. BlueZ + bluealsa + full rtl_bt firmware set are image carry-overs with nothing to drive |
+| GPIO | gpiochip0 = sunxi 288 pins: spi1 CS0/1/2 (75/71/77), CAN INT (73), soft-I2C scl/sda (74/76), **ws2812-gpio (78)**, led_work (229, active-low), reset (210); gpiochip1 = R_PIO 32 pins |
+| WS2812 | `leds_ws2812` module live and gpio-78 claimed as consumer; no led-class entry surfaced - control path untested |
+| CPU | 9 OPPs 480 MHz-1512 MHz, governor ondemand |
+| Ethernet | sunxi-gmac + internal ephy, 100 Mb/s full-duplex link up |
+| HDMI/panel | modes 1024x600 + 640x480; EDID Lontium; touch input "BIQU BTT-HDMI7" via usbhid (panel is a TOUCHSCREEN); dw_hdmi_cec + dw_hdmi_i2s_audio modules loaded (CEC + HDMI audio graph present but stream-open fails, see finding 9) |
+| Misc | pwmchip0, rtc0, watchdog0, hwmon0-3 (= 4 thermal zones), 8x sunxi UART (ttyS0-7) + CH340 ttyUSB0, 2 mmc hosts (SD + WiFi SDIO), musb_hdrc OTG, camera = USB camera with 2 audio interfaces (mic) |
+| LAN env (ARP) | 192.168.178.1 (router, RA present, ULA fd30::/64 + public 2a02:: prefix), 192.168.178.2 |
+| Vision state check | screen still shows cat graphic; red LED lit, blue not lit - matches restored system state (wifi_power=1, led_work heartbeat/brightness 0) |
