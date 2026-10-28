@@ -35,8 +35,10 @@ verify the reported values against ground-truth tools (`uname`, `free`,
 ### User Story 2 - Peripheral Probe (Priority: P2)
 
 As an operator, I list the status of the CB1's hardware peripherals: CAN
-(`can0`, mcp2515), SPI (`/dev/spidev1.1`), I2C buses, HDMI panel, WS2812 LED
-device nodes - present, enabled, and link state where available.
+(`can0`, mcp2515), SPI (`/dev/spidev1.1`), I2C buses, HDMI panel (including
+its touch input), WS2812 LED, the USB camera (`/dev/video0`) and its mic,
+audio cards (codec/HDMI/camera), WLAN, LEDs, and serial ports - present,
+enabled, and link state where available.
 
 **Why this priority**: The hardware inventory is the prerequisite for the
 later CAN/LED/panel features and shows which interfaces are usable at all.
@@ -89,8 +91,9 @@ verify the recorded fields and that the file is plain text.
 
 - **FR-001**: System MUST report the CB1's OS/kernel, CPU, memory, storage,
   and uptime in one snapshot invocation.
-- **FR-002**: System MUST report each named hardware peripheral (CAN, SPI,
-  I2C, HDMI, LED) as present/absent with state detail where available.
+- **FR-002**: System MUST report each peripheral from the Hardware Baseline
+  section (CAN, SPI, I2C, display + touch, LED incl. WS2812, camera, audio
+  cards, WLAN, serial) as present/absent with state detail where available.
 - **FR-003**: All command output MUST be available as JSON and as
   human-readable text; `jq` must parse the JSON mode.
 - **FR-004**: System MUST support appending and listing journal entries in
@@ -130,6 +133,29 @@ verify the recorded fields and that the file is plain text.
   cross-built on the workstation).
 - v1 scope confirmed: all three user stories (snapshot, peripheral probe,
   journal) stay in v1 as drafted.
+
+## Hardware Baseline (verified)
+
+Inventory probed 2026-10-28 on the live CB1; full evidence in
+`logs/2026-10-28-hardware-survey.md` and `logs/2026-10-28-camera-quality.md`.
+The probe (US2) targets exactly this surface.
+
+| Subsystem | Verified fact |
+|-----------|---------------|
+| SoC | Allwinner H616 (`bigtreetech,cb1` DT), 4x Cortex-A53, OPPs 480 MHz-1512 MHz, ondemand; 4 thermal zones (~51 C idle) |
+| Memory | 992 MB RAM; zram0 508 MB swap; zram1 50 MB ext4 on `/var/log` |
+| Storage | 32 GB SD: vfat `/boot` + ext4 `/` |
+| CAN | `can0` = mcp2515 on SPI `spi1.1`, INT on gpio-73, 1 Mbit/s, ERROR-ACTIVE |
+| I2C | 4 buses; i2c-0 ac200-sunxi @0x10; i2c-1 axp313a PMIC @0x36 |
+| Display | `fb0` 1024x600 @32bpp (raw writes work for b0t via video group); HDMI-A-1 connected, EDID Lontium, modes 1024x600 + 640x480; panel is a TOUCHSCREEN (HID "BIQU BTT-HDMI7"); CEC module loaded; GPU render node only (`renderD128`) |
+| Audio | card0 sun4i codec: playback works; card1 HDMI: PCM registered, stream open fails ("Channels count non available"); card2 = camera mic (same open failure) |
+| Camera | 1415:2000 gspca/ov534, sensor OV7721: YUYV only (no MJPG), max 640x480, fixed focus (no focus control), mic on card2 |
+| WLAN | Realtek RTL8189FS on SDIO (024c:f179), driver `8189fs`, power GPIOs high, unassociated |
+| Bluetooth | absent silicon (WiFi-only module); BlueZ units + rtl_bt firmware are image carry-overs |
+| Ethernet | sunxi-gmac internal ephy, 100 Mbit/s full-duplex |
+| LEDs | `led_work` (blue, gpio-229 active-low), `wifi_power`, `wifi_wake`; WS2812 on gpio-78: `leds_ws2812` loaded, no LED-class entry ("present-but-down" case for US2) |
+| Serial | 8x sunxi UART (ttyS0-7) + CH340 `/dev/ttyUSB0` |
+| Misc | pwmchip0, rtc0, watchdog0, 2 mmc hosts, Docker installed |
 
 ## Assumptions
 
