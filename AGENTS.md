@@ -107,7 +107,7 @@ Purpose: build software on the BTT PAD 7 (CB1, Allwinner H616, 4x Cortex-A53, 1 
 
 | Item | Value |
 |------|-------|
-| Target host | `ssh bttpad7` (192.168.178.107, user `b0t`, key auth) |
+| Target host | `ssh btt-pad7` (alias `bttpad7` is the same block; 192.168.178.107, user `b0t`, key auth) |
 | OS | Armbian 26.8.3 Trixie, kernel 7.0.2-vendor-sunxi64 |
 | Access | native sshd port 22 (password `b0t`, test value); sandboxed container sshd port 2222 (key-only by design) |
 | Storage | 32 GB SD card, root ext4 expanded, zram swap |
@@ -117,7 +117,7 @@ Conventions:
 
 - Conventional Commits; one intent per commit
 - Scripts target arm64/Debian 13 unless marked otherwise
-- Dev host `ssh omar` (Omarchy 4.0.6, x86_64): `gh` authed as `satwareAG-ironMike`, `tea` login `satware` (user `mw` on git.satware.ai); clones at `~/Work/external/btt-pad7` and `~/Work/harness`; setup record `logs/2026-10-30-dev-host-omar.md`
+- Dev host `ssh omar` (Omarchy 4.0.6, x86_64): `gh` authed as `satwareAG-ironMike`, `tea` login `satware` (user `mw` on git.satware.ai); clones at `~/Work/external/btt-pad7` and `~/Work/harness`; reaches the pad as `ssh omar` then `ssh btt-pad7` with its own key; records `logs/2026-10-30-dev-host-omar.md`, `logs/2026-10-30-pad7-access-from-omar.md`
 - Hardware state changes (flashes, config changes on the CB1) must be recorded in `logs/` at execution time
 - Constitution `.specify/memory/constitution.md` v1.0.0 is the binding governance for all work in this repo
 - SDD: specs in `specs/###-feature/` via spec-kit (canonical source satwareAG/spec-kit); IPADP L1 metadata in `specs/metadata.json`; public repo must not link to private repos
