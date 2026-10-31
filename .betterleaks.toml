@@ -1,0 +1,19 @@
+title = "betterleaks config for btt-pad7"
+
+# REQUIRED by the EOD/pre-commit gate (harness rules/agent.guardrails.md §6,
+# enforcement #1032): [extend] useDefault = true must stay. A config without
+# rules makes betterleaks scan nothing - the blind-gate incident 2026-09-28.
+# Syntax gotcha (#1546): betterleaks 1.9.0 rejects the gitleaks 8.19+ nested
+# `[[rules.allowlist]]` array table; only the singular top-level `[allowlist]`
+# table is supported. Keep that shape when porting.
+[extend]
+  useDefault = true
+
+# AWS access-key-id gap (#1553): betterleaks 1.9.0's default ruleset does not
+# detect AKIA/ASIA/ABIA/ACCA key ids (probed 2026-10-29). gitleaks-parity rule
+# carried from harness/.betterleaks.toml until upstream closes the gap.
+[[rules]]
+  id = "aws-access-key-id"
+  description = "AWS access key id (gitleaks parity, #1553)"
+  regex = '''(?:A3T[A-Z0-9]|AKIA|ASIA|ABIA|ACCA)[A-Z0-9]{16}'''
+  keywords = ["AKIA", "ASIA", "ABIA", "ACCA"]

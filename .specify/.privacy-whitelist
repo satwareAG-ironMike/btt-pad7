@@ -1,0 +1,4 @@
+# IPADP L2 Privacy: suppress self-references from the privacy checker itself.
+# It contains its own pattern definitions and comments, which otherwise match
+# its own private-URL rules (git.satware.ai / gitlab.satware.com).
+check-privacy-leaks.sh

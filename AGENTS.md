@@ -78,12 +78,14 @@ Default section order:
 
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
 
-## Child DOX Index
+- `main` is branch-protected and PR-only since 2026-10-27: required PR, approving-review count 0, `enforce_admins: true`, linear history, no force-push, no branch deletion. All work lands on `main` via feature branch + PR; direct pushes to `main` are not possible and must not be attempted
+- Do not open generated images in the user's viewer: analyze them with the computervision skill and report the read; only open an image when the user explicitly asks
 
-No child AGENTS.md files yet. Scan for new directories with their own durable boundaries and add a row here when one is created:
+## Child DOX Index
 
 | Path | Scope | File |
 |------|-------|------|
+| docs/ | Public device docs: README.md overview + per-domain pages under docs/hardware/ | docs/AGENTS.md |
 
 ## Honesty
 
@@ -104,7 +106,7 @@ Purpose: build software on the BTT PAD 7 (CB1, Allwinner H616, 4x Cortex-A53, 1 
 
 | Item | Value |
 |------|-------|
-| Target host | `ssh bttpad7` (192.168.178.107, user `b0t`, key auth) |
+| Target host | `ssh btt-pad7` (alias `bttpad7` is the same block; 192.168.178.107, user `b0t`, key auth) |
 | OS | Armbian 26.8.3 Trixie, kernel 7.0.2-vendor-sunxi64 |
 | Access | native sshd port 22 (password `b0t`, test value); sandboxed container sshd port 2222 (key-only by design) |
 | Storage | 32 GB SD card, root ext4 expanded, zram swap |
@@ -114,4 +116,8 @@ Conventions:
 
 - Conventional Commits; one intent per commit
 - Scripts target arm64/Debian 13 unless marked otherwise
+- Dev host `ssh omar` (Omarchy 4.0.6, x86_64): `gh` authed as `satwareAG-ironMike`, `tea` login `satware` (user `mw` on git.satware.ai); clones at `~/Work/external/btt-pad7` and `~/Work/harness`; reaches the pad as `ssh omar` then `ssh btt-pad7` with its own key; records `logs/2026-10-30-dev-host-omar.md`, `logs/2026-10-30-pad7-access-from-omar.md`
 - Hardware state changes (flashes, config changes on the CB1) must be recorded in `logs/` at execution time
+- Secret gate: `betterleaks` scans this repo with `.betterleaks.toml` (`[extend] useDefault = true` plus the `aws-access-key-id` parity rule); scan before a commit or push lands, no gitleaks fallback
+- Constitution `.specify/memory/constitution.md` v1.0.0 is the binding governance for all work in this repo
+- SDD: specs in `specs/###-feature/` via spec-kit (canonical source satwareAG/spec-kit); IPADP L1 metadata in `specs/metadata.json`; public repo must not link to private repos

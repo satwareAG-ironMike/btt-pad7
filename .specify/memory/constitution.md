@@ -1,50 +1,74 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# BTT PAD 7 Constitution
+
+**Ratified**: 2026-10-27
+**Version**: 1.0.0
+**Input**: "full project initialization in dialog" session decisions, 2026-10-27
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Test-First (NON-NEGOTIABLE)
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+No production code without a failing test first. Red-Green-Refactor cycle strictly
+enforced; tests are written for the real target (CB1 or its sandboxed test
+container), never only for the workstation. Trivial/Small edits may use the
+test-tier exemptions defined by the harness quality rules; everything else is
+test-first. Negative control: watch each test fail before implementing.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. Spec-Anchored SDD
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+Specifications are the source of truth. Every feature gets a spec in
+`specs/###-feature/` before implementation; spec, plan, and tasks stay
+cross-referenced (FR/US/task IDs). Debugging fixes the spec first, then the
+code. Anchor final implementation details back into the spec.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### III. Simplicity & Hardware Constraint
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+Target: Allwinner H616, 4x Cortex-A53, 1 GB RAM, 32 GB SD card, Armbian
+26.8.3 Trixie (Debian 13, arm64). No future-proofing, no abstractions, no
+frameworks that do not exist on the box. YAGNI; justify every byte of the
+1 GB memory budget and every write to the SD card.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### IV. Integration-First with Real Hardware
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Tests run against the real CB1 (`ssh bttpad7`) wherever feasible. Destructive
+or state-changing tests run only against the sandboxed container sshd
+(port 2222). Simulated-only test suites are insufficient proof; hardware
+invariants (CAN, SPI, I2C, LED, panel) need on-device verification.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### V. Observability & Hardware Journaling
+
+Every state change on the CB1 (flashes, config edits, driver loading) is
+recorded in `logs/` at execution time: what, where, when, why, result.
+Tools expose a CLI interface with structured output (JSON mode plus
+human-readable) so agent and human can audit without source access.
+
+### VI. Security Boundary
+
+No secrets, credentials, or private-network detail in this repository - it is
+public. Public-to-private interlinking is forbidden (IPADP privacy rule). The
+`b0t` password is a test value only; it must not appear in new code or docs.
+Key-auth ssh is the default access pattern.
+
+## Additional Constraints
+
+- Primary stack: Rust, compiled to statically linked arm64 binaries
+  cross-built on the workstation; no language runtimes installed on the CB1
+  unless a feature spec explicitly says otherwise.
+- Scripts and docs target arm64 / Debian 13 unless marked otherwise.
+- SD-card write discipline: journal files stay small, rotated, plain text.
+
+## Development Workflow
+
+- Conventional Commits, one intent per commit, feature branches merged to
+  `main` via PR.
+- Quality gates: pre-commit secret scan + lint; full test run before push.
+- Specs flow: constitution -> specify -> clarify -> plan -> tasks ->
+  implement -> anchor; clarify max 5 questions per cycle.
+- Hardware journal entries live in `logs/` and are committed with the change
+  they record.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
-
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+This constitution outranks convenience: conflicting instructions from agents
+or session chatter defer to it. Amendments require a dated commit with a
+version bump and a rationale line.
