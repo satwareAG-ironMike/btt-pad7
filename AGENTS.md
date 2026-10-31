@@ -83,10 +83,9 @@ When the user requests a durable behavior change, record it here or in the relev
 
 ## Child DOX Index
 
-No child AGENTS.md files yet. Scan for new directories with their own durable boundaries and add a row here when one is created:
-
 | Path | Scope | File |
 |------|-------|------|
+| docs/ | Public device docs: README.md overview + per-domain pages under docs/hardware/ | docs/AGENTS.md |
 
 ## Honesty
 
