@@ -136,26 +136,31 @@ verify the recorded fields and that the file is plain text.
 
 ## Hardware Baseline (verified)
 
-Inventory probed 2026-10-28 on the live CB1; full evidence in
-`logs/2026-10-28-hardware-survey.md` and `logs/2026-10-28-camera-quality.md`.
-The probe (US2) targets exactly this surface.
+Inventory first probed 2026-10-28 on the live CB1; re-verified 2026-10-31.
+Evidence in `logs/2026-10-28-hardware-survey.md`,
+`logs/2026-10-28-camera-quality.md`, and `logs/2026-10-31-hardware-reverify.md`;
+per-domain pages with online resources in `docs/hardware/`. The probe (US2)
+targets exactly this surface.
 
 | Subsystem | Verified fact |
 |-----------|---------------|
-| SoC | Allwinner H616 (`bigtreetech,cb1` DT), 4x Cortex-A53, OPPs 480 MHz-1512 MHz, ondemand; 4 thermal zones (~51 C idle) |
-| Memory | 992 MB RAM; zram0 508 MB swap; zram1 50 MB ext4 on `/var/log` |
-| Storage | 32 GB SD: vfat `/boot` + ext4 `/` |
-| CAN | `can0` = mcp2515 on SPI `spi1.1`, INT on gpio-73, 1 Mbit/s, ERROR-ACTIVE |
-| I2C | 4 buses; i2c-0 ac200-sunxi @0x10; i2c-1 axp313a PMIC @0x36 |
-| Display | `fb0` 1024x600 @32bpp (raw writes work for b0t via video group); HDMI-A-1 connected, EDID Lontium, modes 1024x600 + 640x480; panel is a TOUCHSCREEN (HID "BIQU BTT-HDMI7"); CEC module loaded; GPU render node only (`renderD128`) |
-| Audio | card0 sun4i codec: playback works; card1 HDMI: PCM registered, stream open fails ("Channels count non available"); card2 = camera mic (same open failure) |
-| Camera | 1415:2000 gspca/ov534, sensor OV7721: YUYV only (no MJPG), max 640x480, fixed focus (no focus control), mic on card2 |
+| SoC | Allwinner H616 (`bigtreetech,cb1` DT), 4x Cortex-A53, OPPs 480 MHz-1512 MHz, ondemand; 4 thermal zones (~52 C) |
+| Memory | 992 MB RAM; zram0 ~485 MB swap; zram1 50 MB ext4 on `/var/log`; zram2 unconfigured |
+| Storage | 32 GB SD (mmcblk1 at 2026-10-31 reverify): vfat `/boot` (256 M) + ext4 `/` (29.2 G); 2 mmc hosts (mmc0 SDIO WiFi, mmc1 SD card) |
+| CAN | `can0` = mcp2515 on SPI `spi1.0` (2026-10-31 reverify), INT on gpio-73, 1 Mbit/s, sample-point 0.666, ERROR-ACTIVE |
+| SPI | host spi1 (5011000): spi1.0 (10 MHz max, mcp2515), spi1.1 (1 MHz max, unbound spidev) |
+| I2C | 4 buses; i2c-0 ac200-sunxi @0x10 (probe fails -22, ac300 detected); i2c-1 axp313a PMIC @0x36 |
+| Display | `fb0` 1024x600 @32bpp (raw writes work for the `video` group, no sudo); HDMI-A-1 connected, EDID product "Lontium Semiconductor", modes 1024x600 + 640x480; sun4i-drm (display-engine) + sun8i-dw-hdmi 6000000; panel is a TOUCHSCREEN (HID "BIQU BTT-HDMI7"); CEC module loaded; GPU render node only (`renderD128`) |
+| Audio | card0 sun4i codec: playback works; card1 HDMI: PCM registered, stream open fails ("Channels count non available"); camera card2 absent (camera unconnected, 2026-10-31) |
+| Camera | optional USB: 1415:2000 gspca/ov534, sensor OV7721: YUYV only (no MJPG), max 640x480, fixed focus (no focus control), mic; unconnected at 2026-10-31 reverify |
 | WLAN | Realtek RTL8189FS on SDIO (024c:f179), driver `8189fs`, power GPIOs high, unassociated |
 | Bluetooth | absent silicon (WiFi-only module); BlueZ units + rtl_bt firmware are image carry-overs |
 | Ethernet | sunxi-gmac internal ephy, 100 Mbit/s full-duplex |
 | LEDs | `led_work` (blue, gpio-229 active-low), `wifi_power`, `wifi_wake`; WS2812 on gpio-78: `leds_ws2812` loaded, no LED-class entry ("present-but-down" case for US2) |
-| Serial | 8x sunxi UART (ttyS0-7) + CH340 `/dev/ttyUSB0` |
-| Misc | pwmchip0, rtc0, watchdog0, 2 mmc hosts, Docker installed |
+| PWM/GPIO | pwmchip0 npwm=6 (no pwmN exports); gpiochip0 sunxi 288 pins, gpiochip1 R_PIO 32 |
+| Timing | sun6i-rtc rtc0 unconfigured (kernel sets 1970-01-02T00:00:04 UTC at boot); sunxi-wdt 16 s timeout, nowayout=0 |
+| Serial | 8x sunxi UART (ttyS0-7); no ttyUSB (CH340 unconnected, 2026-10-31) |
+| Misc | `/sys/class/fbdev/` absent (2026-10-31); Docker installed |
 
 ## Assumptions
 
