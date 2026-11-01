@@ -35,7 +35,7 @@ verify the reported values against ground-truth tools (`uname`, `free`,
 ### User Story 2 - Peripheral Probe (Priority: P2)
 
 As an operator, I list the status of the CB1's hardware peripherals: CAN
-(`can0`, mcp2515), SPI (`/dev/spidev1.1`), I2C buses, HDMI panel (including
+(`can0`, mcp2515), SPI (`/dev/spidev1.0`), I2C buses, HDMI panel (including
 its touch input), WS2812 LED, the USB camera (`/dev/video0`) and its mic,
 audio cards (codec/HDMI/camera), WLAN, LEDs, and serial ports - present,
 enabled, and link state where available.
@@ -92,8 +92,9 @@ verify the recorded fields and that the file is plain text.
 - **FR-001**: System MUST report the CB1's OS/kernel, CPU, memory, storage,
   and uptime in one snapshot invocation.
 - **FR-002**: System MUST report each peripheral from the Hardware Baseline
-  section (CAN, SPI, I2C, display + touch, LED incl. WS2812, camera, audio
-  cards, WLAN, serial) as present/absent with state detail where available.
+  section (CAN, SPI, I2C, Ethernet, Bluetooth, PWM/GPIO, display + touch,
+  LED incl. WS2812, camera, audio cards, WLAN, serial, Timing) as present/
+  absent with state detail where available.
 - **FR-003**: All command output MUST be available as JSON and as
   human-readable text; `jq` must parse the JSON mode.
 - **FR-004**: System MUST support appending and listing journal entries in

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# check-privacy-leaks.sh — IPADP L2 Privacy Validation
+# check-privacy-leaks.sh - IPADP L2 Privacy Validation
 #
 # Scans all tracked repository files for patterns that should not appear
 # in a public repository (private URLs, internal IPs, credentials).
@@ -10,7 +10,7 @@
 #   - Private IP ranges (10.x, 172.16-31.x, 192.168.x)
 #   - Hardcoded API keys / tokens (generic patterns)
 #
-# Whitelist: .privacy-whitelist (one pattern per line, grep -E extended regex)
+# Whitelist: .specify/.privacy-whitelist (one pattern per line, grep -E extended regex)
 #
 # Usage: ./check-privacy-leaks.sh [REPO_ROOT]
 # Exit: 0 = clean, 1 = violations found
@@ -20,7 +20,7 @@
 set -euo pipefail
 
 REPO_ROOT="${1:-.}"
-WHITELIST="${REPO_ROOT}/.privacy-whitelist"
+WHITELIST="${REPO_ROOT}/.specify/.privacy-whitelist"
 VIOLATIONS=0
 REPORT=""
 
@@ -85,7 +85,7 @@ for entry in "${PATTERNS[@]}"; do
   while IFS= read -r match; do
     [[ -z "${match}" ]] && continue
 
-    # Check whitelist — skip if line matches any whitelist pattern
+    # Check whitelist - skip if line matches any whitelist pattern
     if [[ -f "${WHITELIST}" ]]; then
       skipped=false
       while IFS= read -r wl_line; do
