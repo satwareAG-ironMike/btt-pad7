@@ -14,7 +14,7 @@
 2. **Memory**: 992 MB RAM (799 MB available at survey), zram0 508 MB swap (used 0), zram1 50 MB ext4 for /var/log, zram2 unconfigured.
 3. **Storage**: mmcblk0 32 GB, vfat /boot (256 MB) + ext4 / (29 GB, 9% used).
 4. **USB (bus 2 hub 1a40:0101)**: BTT-HDMI7 panel (04d9:8030), CH340 serial (1a86:7523, exposes /dev/ttyUSB0), camera 1415:2000 gspca (surveyed separately).
-5. **Network**: eth0 UP (H616 GMAC, MAC 5a:42:ee:9d:b8:4a), can0 UP mcp251x @ 1 Mbit/s (ERROR-ACTIVE, sample-point 0.666), wlan0 DOWN/NO-CARRIER (rfkill wlan enabled; chip present, no association), docker0 + br-cd4eedadd5fa (Docker installed), no Bluetooth.
+5. **Network**: eth0 UP (H616 GMAC, internal PHY), can0 UP mcp251x @ 1 Mbit/s (ERROR-ACTIVE, sample-point 0.666), wlan0 DOWN/NO-CARRIER (rfkill wlan enabled; chip present, no association), docker0 + docker bridge present (Docker installed), no Bluetooth.
 6. **I2C**: 4 buses; i2c-1: axp313a PMIC @0x36, ac200-sunxi @0x10 (i2c-0).
 7. **SPI**: spi1.0 + spi1.1; mcp2515 CAN transceiver on spidev1.1.
 8. **Display**: DRM card0 = HDMI-A-1 (connected), EDID vendor Lontium Semi (panel controller); modes 1024x600 + 640x480; fb0 = 1024x600 @ 32 bpp; render node card1/renderD128 (panfrost render-only). Raw `/dev/fb0` write displays a full-frame graphic (cat test, b0t via video group - no sudo needed).
@@ -36,5 +36,5 @@ Redaction (constitution VI): sudo password not recorded.
 | Ethernet | sunxi-gmac + internal ephy, 100 Mb/s full-duplex link up |
 | HDMI/panel | modes 1024x600 + 640x480; EDID Lontium; touch input "BIQU BTT-HDMI7" via usbhid (panel is a TOUCHSCREEN); dw_hdmi_cec + dw_hdmi_i2s_audio modules loaded (CEC + HDMI audio graph present but stream-open fails, see finding 9) |
 | Misc | pwmchip0, rtc0, watchdog0, hwmon0-3 (= 4 thermal zones), 8x sunxi UART (ttyS0-7) + CH340 ttyUSB0, 2 mmc hosts (SD + WiFi SDIO), musb_hdrc OTG, camera = USB camera with 2 audio interfaces (mic) |
-| LAN env (ARP) | 192.168.178.1 (router, RA present, ULA fd30::/64 + public 2a02:: prefix), 192.168.178.2 |
+| LAN env (ARP) | LAN router present (RA detected) plus one further LAN host; IPs, ULA and public prefix not recorded (constitution VI) |
 | Vision state check | screen still shows cat graphic; red LED lit, blue not lit - matches restored system state (wifi_power=1, led_work heartbeat/brightness 0) |
