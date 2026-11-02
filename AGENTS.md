@@ -86,6 +86,8 @@ When the user requests a durable behavior change, record it here or in the relev
 | Path | Scope | File |
 |------|-------|------|
 | docs/ | Public device docs: README.md overview + per-domain pages under docs/hardware/ | docs/AGENTS.md |
+| tests/ | Runnable bash test suite for gate scripts (constitution I); sandbox lane reserved | tests/AGENTS.md |
+| githooks/ | pre-commit/pre-push gate hooks (betterleaks, privacy check) | githooks/AGENTS.md |
 
 ## Honesty
 
@@ -119,5 +121,7 @@ Conventions:
 - Dev host `ssh omar` (Omarchy 4.0.6, x86_64): `gh` authed as `satwareAG-ironMike`, `tea` login `satware` (private gitea, user `mw`); clones at `~/Work/external/btt-pad7` and `~/Work/harness`; reaches the pad as `ssh omar` then `ssh btt-pad7` with its own key; records `logs/2026-10-30-dev-host-omar.md`, `logs/2026-10-30-pad7-access-from-omar.md`
 - Hardware state changes (flashes, config changes on the CB1) must be recorded in `logs/` at execution time
 - Secret gate: `betterleaks` scans this repo with `.betterleaks.toml` (`[extend] useDefault = true` plus the `aws-access-key-id` parity rule); scan before a commit or push lands, no gitleaks fallback
+- Hook gate: `git config core.hooksPath githooks` activates `githooks/pre-commit` (betterleaks) and `githooks/pre-push` (betterleaks + privacy check); run it once per clone before the first commit or push
+- Test command: `bash tests/run.sh` runs the top-level `test-*.sh` suite (constitution I); state-changing tests only under `tests/sandbox/` (2222 lane)
 - Constitution `.specify/memory/constitution.md` v1.0.0 is the binding governance for all work in this repo
 - SDD: specs in `specs/###-feature/` via spec-kit (canonical source satwareAG/spec-kit); IPADP L1 metadata in `specs/metadata.json`; public repo must not link to private repos

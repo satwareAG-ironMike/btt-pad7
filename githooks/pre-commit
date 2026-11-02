@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# githooks/pre-commit - secret gate: betterleaks scan before any commit lands.
+#
+# Required by the AGENTS.md secret gate (betterleaks + .betterleaks.toml,
+# no gitleaks fallback). Fail-closed: a missing tool blocks the commit,
+# because an unverified commit is a leak with a signature.
+set -euo pipefail
+
+if ! command -v betterleaks >/dev/null 2>&1; then
+    echo "ERROR: betterleaks not in PATH - secret gate cannot run." >&2
+    echo "Install betterleaks, then retry the commit." >&2
+    exit 1
+fi
+
+betterleaks git .
