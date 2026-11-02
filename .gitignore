@@ -1,0 +1,2 @@
+# Transient test fixtures (staged + scanned + un-staged within the test run)
+.fixtures/
