@@ -12,7 +12,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../../../" && pwd)"
 CLINE_DIR="${HARNESS_DIR:-$HOME/internal/harness}"
 PROTOCOL="$CLINE_DIR/workflows/eod.protocol.md"
 
@@ -33,7 +33,7 @@ fail=0
 
 echo ""
 echo "🔒 Running privacy leak check (pre-push safety net)..."
-if "$REPO_ROOT/scripts/bash/check-privacy-leaks.sh" "$REPO_ROOT"; then
+if "$REPO_ROOT/.specify/scripts/bash/check-privacy-leaks.sh" "$REPO_ROOT"; then
     echo "✅ privacy check passed"
 else
     echo "❌ privacy check FAILED — do not push until resolved."

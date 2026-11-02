@@ -34,7 +34,7 @@ trap cleanup EXIT
 
 # 1) seed a private IP -> checker must reject it
 mkdir -p "$FIXTURE_DIR"
-printf '%s.50\n' '192.168.1' > "$FIXTURE"   # content: 192.168.1.50
+printf '%s.50\n' '192.168.1' > "$FIXTURE"
 git -C "$REPO_ROOT" add -f "$FIXTURE" >/dev/null
 rc=0
 bash "$CHECKER" "$REPO_ROOT" >/dev/null 2>&1 || rc=1
