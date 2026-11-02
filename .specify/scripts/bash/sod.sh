@@ -12,7 +12,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../../../" && pwd)"
 CLINE_DIR="${HARNESS_DIR:-$HOME/internal/harness}"
 PROTOCOL="$CLINE_DIR/workflows/sod.protocol.md"
 
@@ -34,7 +34,7 @@ fail=0
 
 echo ""
 echo "🔒 Running privacy leak check..."
-if "$REPO_ROOT/scripts/bash/check-privacy-leaks.sh" "$REPO_ROOT"; then
+if "$REPO_ROOT/.specify/scripts/bash/check-privacy-leaks.sh" "$REPO_ROOT"; then
     echo "✅ privacy check passed"
 else
     echo "❌ privacy check FAILED"
@@ -43,7 +43,7 @@ fi
 
 echo ""
 echo "🔄 Running upstream sync check..."
-if "$REPO_ROOT/scripts/bash/check-upstream-sync.sh"; then
+if "$REPO_ROOT/.specify/scripts/bash/check-upstream-sync.sh"; then
     echo "✅ upstream-sync check completed"
 else
     echo "⚠️  upstream-sync check reported issues (non-fatal)"
