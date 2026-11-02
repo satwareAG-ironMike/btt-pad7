@@ -20,7 +20,7 @@ Usage: $0 <command>
 Commands:
   sod     Run Start-of-Day protocol (privacy + upstream-sync checks)
   eod     Run End-of-Day protocol (privacy check)
-  pre-pr  Run pre-PR health checks (ruff, pytest, privacy, sync)
+  pre-pr  Run pre-PR health checks (bash -n, tests, privacy, betterleaks, sync)
   help    Show this help
 EOF
 }
