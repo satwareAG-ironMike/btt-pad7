@@ -6,10 +6,13 @@
 # because an unverified commit is a leak with a signature.
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
 if ! command -v betterleaks >/dev/null 2>&1; then
     echo "ERROR: betterleaks not in PATH - secret gate cannot run." >&2
     echo "Install betterleaks, then retry the commit." >&2
     exit 1
 fi
 
-betterleaks git .
+betterleaks git "$REPO_ROOT"

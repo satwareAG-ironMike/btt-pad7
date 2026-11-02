@@ -18,7 +18,7 @@ if ! betterleaks git "$REPO_ROOT"; then
     exit 1
 fi
 
-if ! "$REPO_ROOT/.specify/scripts/bash/check-privacy-leaks.sh" "$REPO_ROOT" >/dev/null 2>&1; then
+if ! "$REPO_ROOT/.specify/scripts/bash/check-privacy-leaks.sh" "$REPO_ROOT"; then
     echo "ERROR: privacy check FAILED - push blocked." >&2
     exit 1
 fi

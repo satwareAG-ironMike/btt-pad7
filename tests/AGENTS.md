@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Runnable bash test suite for the gate scripts (constitution I): privacy checker, eod.sh, pre-pr.sh. No Python toolchain exists in this repo (no pytest, no ruff, no uv) - tests are bash only.
+Runnable bash test suite for the gate scripts (constitution I): githooks hooks (pre-commit, pre-push), privacy checker, eod.sh, pre-pr.sh. No Python toolchain exists in this repo (no pytest, no ruff, no uv) - tests are bash only.
 
 ## Ownership
 

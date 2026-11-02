@@ -23,7 +23,9 @@ check_root() {
 }
 
 check_workguidance() {
-    if grep -qF '^## Work Guidance' "$DOCS"; then
+    # grep -F treats a leading ^ as literal on this toolchain; regex mode
+    # anchors correctly.
+    if grep -q '^## Work Guidance' "$DOCS"; then
         echo "Work Guidance section confirmed"
     else
         echo "  FAIL: githooks/AGENTS.md has no Work Guidance section" >&2
