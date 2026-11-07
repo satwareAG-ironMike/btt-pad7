@@ -256,7 +256,10 @@ class Fb0:
         self.stride = int((base / 'stride').read_text().strip())
         parts = (base / 'virtual_size').read_text().strip()
         parts = parts.replace('x', ' ').replace(',', ' ').split()
-        self.vheight, self.vwidth = int(parts[0]), int(parts[1])
+        # virtual_size is reported W,H (e.g. "1024,600"); height drives the
+        # byte size: stride * height. Swapped values would over-mmap by 1.7x
+        # and clear() would write past the real fb (hardware UB).
+        self.vwidth, self.vheight = int(parts[0]), int(parts[1])
         fd = os.open('/dev/fb0', os.O_RDWR)
         import mmap
         self.size = self.stride * self.vheight
