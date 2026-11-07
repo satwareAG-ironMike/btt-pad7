@@ -88,6 +88,7 @@ When the user requests a durable behavior change, record it here or in the relev
 | docs/ | Public device docs: README.md overview + per-domain pages under docs/hardware/ | docs/AGENTS.md |
 | tests/ | Runnable bash test suite for gate scripts (constitution I); sandbox lane reserved | tests/AGENTS.md |
 | githooks/ | pre-commit/pre-push gate hooks (betterleaks, privacy check) | githooks/AGENTS.md |
+| bin/ | BTT PAD 7 ttfx fb0 screensaver: effect renderer + glyph atlas (omarchy-screensaver.py, atlas.json) | bin/AGENTS.md |
 
 ## Honesty
 

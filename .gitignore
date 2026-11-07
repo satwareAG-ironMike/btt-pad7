@@ -1,2 +1,9 @@
 # Transient test fixtures (staged + scanned + un-staged within the test run)
 .fixtures/
+# Build checkout of external ttfx (omacom/ttfx) + local cargo build artifacts
+.ttfx-build/
+# Transient verification/work frames on this host
+.frames/
+# Python bytecode
+__pycache__/
+*.pyc
